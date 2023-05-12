@@ -1,0 +1,4 @@
+requests==2.30.0
+executor==23.2
+fasteners==0.18
+websockets==11.0.3
