@@ -1,0 +1,4 @@
+url:https://download.samplelib.com/png/sample-clouds2-400x300.png, file_amount_bytes:124864, status:downlanded
+url:https://download.samplelib.com/png/sample-bumblebee-400x300.png, file_amount_bytes:195459, status:downlanded
+url:https://download.samplelib.com/png/sample-hut-400x300.png, file_amount_bytes:271068, status:downlanded
+url:https://download.samplelib.com/png/sample-boat-400x300.png, file_amount_bytes:705670, status:downlanded
