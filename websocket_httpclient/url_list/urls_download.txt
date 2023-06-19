@@ -1,0 +1,4 @@
+url:https://download.samplelib.com/mp4/sample-15s.mp4, file_amount_bytes:11916526, status: downloaded
+url:https://download.samplelib.com/png/sample-boat-400x300.png, file_amount_bytes:705670, status: downloaded
+url:https://download.samplelib.com/mp3/sample-15s.mp3, file_amount_bytes:307453, status: downloaded
+url:https://download.samplelib.com/xls/sample-heavy-1.xls, file_amount_bytes:519168, status: downloaded
