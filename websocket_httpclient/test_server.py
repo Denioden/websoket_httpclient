@@ -4,78 +4,66 @@ import os
 import pathlib
 from config import HOST, PORT
 import validators
+import requests
+from texts import (
+    FORMAT_URL_ERROR,
+    MESSAGE_START_DOWNLOAD,
+    MESSAGE_WAITING,
+    RESPONSE_ERROR,
+    SERVER_COMMAND_ERROR
+)
 
 
 async def handler(websocket):
-    help_text = (
-        'start - Начать запись ссылок'
-        'end - Закончить запись ссылок и отправить их на скачивание'
-        'queue - Показить ссылки в ожидании'
-        'loading - Покать ссылку по которой происходит загрузка'
-        'download - Показать сслки по которым загрузились файлы'
-    )
-    await websocket.send(help_text)
     while True:
-        with open("./url_list/flag.txt", "r") as file:
+        with open("./data/flag.txt", "r") as file:
             flag = file.readline()
 
-        comand = await websocket.recv()
-        if comand == 'start' and flag == 'end':
-            text_error = 'Для добавления новых ссылок на скачивание, дождитесь окончания загрузки'
-            await websocket.send(text_error)
+        command = await websocket.recv()
 
-        elif comand == 'start':
-            url = 'zero'
+        if command == 'start' and flag == 'end':
+            await websocket.send(MESSAGE_WAITING)
+
+        elif command == 'start':
+            url = 'null'
             url_list = []
             while url != 'end':
                 url = await websocket.recv()
                 val = validators.url(url)
+                response = requests.head(url)
 
                 if url == 'end':
-                    await websocket.send('Отправка ссылок на скачивание')
-                    with open("./url_list/flag.txt", "r+") as file:
+                    await websocket.send(MESSAGE_START_DOWNLOAD)
+                    with open("./data/flag.txt", "r+") as file:
                         file.write('end')
                     
                 elif not val:
-                    text_error = 'Ссылка не соответствует формату'
-                    await websocket.send(text_error)
+                    await websocket.send(FORMAT_URL_ERROR)
+                
+                elif response.status_code != 200:
+                    await websocket.send(RESPONSE_ERROR)
 
                 else:
                     file_name = (url.split('/'))[-1]
-
-                    # проверяем наличие файла.
                     check_file = os.path.exists(f'./files/{file_name}')
 
                     if check_file:
-                        path_file = f'file:///{pathlib.Path.cwd()}/url_list/{file_name}'
+                        path_file = f'file:///{pathlib.Path.cwd()}/files/{file_name}'
                         await websocket.send(path_file)
 
                     else:
                         url_list.append(url)
-
-                        with open("./url_list/urls.txt", "a+") as file:
+                        with open("./data/urls.txt", "a+") as file:
                             file.write(f'{url}#')
-         
-        elif comand == 'queue':
-            with open("./url_list/urls_queue.txt", "r") as file:
-                queue = file.readlines()
-                for status in queue:
-                    await websocket.send(status)
-        
-        elif comand == 'loading':
-            with open("./url_list/url_loading.txt", "r") as file:
-                url = file.readline()
-                await websocket.send(url)
-        
-        elif comand == 'download':
-            with open("./url_list/urls_download.txt", "r") as file:
-                url_dowload = file.readlines()
-                for url in url_dowload:
-                    await websocket.send(url)
 
-        elif comand == 'help':
-            await websocket.send(help_text)
+        elif command == ('queue') or ('loading') or ('download') or ('help_command'):
+            with open(f'./data/urls_{command}.txt', 'r') as file:
+                list_line = file.readlines()
+            for line in list_line:
+                await websocket.send(line)
 
+        else:
+            await websocket.send(SERVER_COMMAND_ERROR)
 
 start_server = websockets.serve(handler, HOST, PORT)
 
