@@ -3,6 +3,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 import os
 from config import THREADS_SIZE, BLOCK_SIZE
+import pathlib
 
 
 def download_file(url, start: int, end: int):
@@ -29,7 +30,7 @@ def progress(data, ranges, file_size, threads_size):
             f'url:{url}, file_amount_bytes:{file_size}, '
             f'threads_size:{threads_size}, status:{prog}'
         )
-        with open('./data/url_loading.txt', 'r+') as file:
+        with open('./data/urls_loading.txt', 'r+') as file:
             file.write(update_status)
 
 
@@ -62,36 +63,37 @@ def download(url, threads=THREADS_SIZE, block=BLOCK_SIZE):
     if not supports_ranges:
         start = 0
         end = file_size
-        download_file(url, start, end)
+        ranges = [(start, end)]
 
     else:
         ranges = [
             (i*block, (i+1)*block-1) for i in range(file_size//block + 1)
         ]
 
-        with ThreadPoolExecutor(max_workers=threads) as executor:
-            results = []
+    with ThreadPoolExecutor(max_workers=threads) as executor:
+        results = []
 
-            for block in ranges:
-                results.append(
-                    executor.submit(
-                        download_file, url=url, start=block[0], end=block[1]
-                    )
+        for block in ranges:
+            results.append(
+                executor.submit(
+                    download_file, url=url, start=block[0], end=block[1]
                 )
-                threads_size = threading.active_count()
+            )
+            threads_size = threading.active_count()
 
-            progress(results, ranges, file_size, threads_size)
+        progress(results, ranges, file_size, threads_size)
 
-            downloaded_file = b''.join([r.result() for r in results])
+        downloaded_file = b''.join([r.result() for r in results])
 
-        save_file(downloaded_file)
+    save_file(downloaded_file)
 
-    os.system(r'>./url_list/url_loading.txt')
+    os.system(r'>./data/urls_loading.txt')
     check_file = os.path.exists(f'./files/{file_name}')
 
     if check_file:
+        path_file = f'file:///{pathlib.Path.cwd()}/files/{file_name}'
         status = (
-            f'url:{url}, file_amount_bytes:{file_size}, status: downloaded'
+            f'url:{url}, file_amount_bytes:{file_size}, patch: {path_file}'
         )
         with open("./data/urls_download.txt", "a") as file:
             file.write(status + '\n')
@@ -109,7 +111,7 @@ with open("./data/flag.txt", "r") as file:
             for url in url_list:
                 file_name = (url.split('/'))[-1]
                 download(url)
-            os.system(r'>./url_list/urls.txt')
-            os.system(r'>./url_list/flag.txt')
+            os.system(r'>./data/urls.txt')
+            os.system(r'>./data/flag.txt')
         else:
             continue
