@@ -89,7 +89,7 @@ python3 -m websockets ws://localhost:8765/
 
 ### help_command - Выведет перечень доступных команд.
 ......................................................................
-#### Comand
+#### Command
     > help_command
          
 #### Response
@@ -100,7 +100,7 @@ python3 -m websockets ws://localhost:8765/
     < loading - Показать url ,по которой происходит загрузка.
     < download - Показать url ,по которым загрузились файлы.
 ......................................................................
-#### Comand
+#### Command
     > start
     >
     > end     
@@ -144,20 +144,20 @@ python3 -m websockets ws://localhost:8765/
 
 ......................................................................
 
-#### Comand
+#### Command
     > queue
 
 #### Response
     < url:https://download.samplelib.com/mp4/sample-30s.mp4, status: В очереди
 ......................................................................
 
-#### Comand
+#### Command
     > loading
          
 #### Response
     < url:https://download.samplelib.com/mp4/sample-30s.mp4, file_amount_bytes:21657943, threads_size:5, status:17.0
 ......................................................................
-#### Comand
+#### Command
     > download
          
 #### Response
