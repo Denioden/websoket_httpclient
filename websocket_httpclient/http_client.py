@@ -46,7 +46,7 @@ def default_status(url_list):
 
 
 # Удаление первой строки файла.
-def delit_line(file_name):
+def delete_line(file_name):
     with open(f'{file_name}', "r") as f:
         lines = f.readlines()
 
@@ -64,7 +64,7 @@ def download(url, threads=THREADS_SIZE, block=BLOCK_SIZE):
         'Accept-Ranges' in response and response['Accept-Ranges'] == 'bytes'
     )
 
-    delit_line('./data/urls_queue.txt')
+    delete_line('./data/urls_queue.txt')
 
     if not supports_ranges:
         start = 0
