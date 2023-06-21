@@ -1,4 +1,0 @@
-url:https://download.samplelib.com/mp4/sample-30s.mp4, file_amount_bytes:21657943, patch: file:////home/daniil/test-work/websoket_httpclient/websocket_httpclient/files/sample-30s.mp4
-url:https://download.samplelib.com/png/sample-boat-400x300.png, file_amount_bytes:705670, patch: file:////home/daniil/test-work/websoket_httpclient/websocket_httpclient/files/sample-boat-400x300.png
-url:https://download.samplelib.com/png/sample-bumblebee-400x300.png, file_amount_bytes:195459, patch: file:////home/daniil/test-work/websoket_httpclient/websocket_httpclient/files/sample-bumblebee-400x300.png
-url:https://download.samplelib.com/mp3/sample-6s.mp3, file_amount_bytes:103070, patch: file:////home/daniil/test-work/websoket_httpclient/websocket_httpclient/files/sample-6s.mp3
