@@ -51,6 +51,11 @@ def validate(url):
 
 async def handler(websocket):
 
+    os.system(r'>./data/urls.txt')
+    os.system(r'>./data/flag.txt')
+    os.system(r'>./data/urls_loading.txt')
+    os.system(r'>./data/urls_queue.txt')
+
     while True:
         with open("./data/flag.txt", "r") as file:
             flag = file.readline()
