@@ -1,2 +1,0 @@
-url:https://download.samplelib.com/png/sample-boat-400x300.png, file_amount_bytes:705670, patch: file:////home/daniil/test-work/websoket_httpclient/websocket_httpclient/files/sample-boat-400x300.png
-url:https://download.samplelib.com/png/sample-clouds2-400x300.png, file_amount_bytes:124864, patch: file:////home/daniil/test-work/websoket_httpclient/websocket_httpclient/files/sample-clouds2-400x300.png
